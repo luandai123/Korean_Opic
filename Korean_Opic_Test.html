@@ -3,119 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OPIc · Korean Speaking Test [TTS Mode]</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<title>OPIc · Korean Speaking Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Noto+Sans+KR:wght@400;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#141414;--paper:#F7F6F2;--mist:#E8E5DE;--mid:#9B97A0;
   --faint:#F0EEE9;--white:#fff;
   --kr:#D44F6E;--kr-dark:#A83454;--kr-soft:#FCEEF2;--kr-mid:#F5C0CE;
-  --accent:#F2A93B;--r:14px;--ease:cubic-bezier(.4,0,.2,1);
+  --accent:#F2A93B;--r:10px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:'Sora',sans-serif;background:var(--paper);color:var(--ink);overflow:hidden}
-#lobby{display:none!important}
 
-/* ══ EXAM ══ */
-#exam{display:none;flex-direction:column;height:100vh;overflow:hidden;background:var(--paper)}
-
-/* hero topbar */
+/* ── TOPBAR ── */
+#exam{display:none;flex-direction:column;height:100vh;background:var(--paper)}
 .topbar{
   background:linear-gradient(135deg,var(--kr) 0%,#a8325a 100%);
-  padding:.5rem 4vw .45rem;flex-shrink:0;
+  padding:.48rem 3vw;flex-shrink:0;
   display:flex;align-items:center;justify-content:space-between;
   position:relative;overflow:hidden;
 }
-.topbar::before{content:'OPIc';position:absolute;right:3vw;top:50%;transform:translateY(-50%);font-size:clamp(2rem,6vw,4rem);font-weight:700;color:rgba(255,255,255,.06);pointer-events:none}
-.top-q{font-family:'DM Serif Display',serif;font-size:.95rem;color:#fff;letter-spacing:-.01em}
-.btn-signout{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:99px;color:rgba(255,255,255,.85);font-family:'Sora',sans-serif;font-size:.65rem;font-weight:600;padding:.26rem .7rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:background .18s}
-.btn-signout:hover{background:rgba(255,255,255,.22)}
+.topbar::before{content:'OPIc';position:absolute;right:2vw;top:50%;transform:translateY(-50%);font-size:3rem;font-weight:700;color:rgba(255,255,255,.06);pointer-events:none}
+.hero-line{display:flex;align-items:baseline;gap:.4rem}
+.hero-eye{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.hero-title{font-family:'DM Serif Display',serif;font-size:1rem;color:#fff;margin:0}
+.hero-title em{font-style:italic;color:rgba(255,255,255,.78)}
+.btn-refresh{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:99px;color:#fff;font-family:'Sora',sans-serif;font-size:.65rem;font-weight:700;padding:.28rem .8rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:background .18s}
+.btn-refresh:hover{background:rgba(255,255,255,.25)}
 
-/* question strip */
-.q-strip-wrap{border-bottom:1.5px solid var(--mist);padding:.45rem 4vw;flex-shrink:0;background:rgba(247,246,242,.97);backdrop-filter:blur(8px)}
-.q-strip-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--mid);margin-bottom:.3rem}
-.q-strip{display:flex;gap:.28rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+/* ── QUESTION STRIP ── */
+.q-strip-wrap{border-bottom:1.5px solid var(--mist);padding:.4rem 3vw .38rem;flex-shrink:0;background:var(--white)}
+.q-strip-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mid);margin-bottom:.28rem}
+.q-strip{display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:none;padding-bottom:1px;justify-content:center}
 .q-strip::-webkit-scrollbar{display:none}
-.q-chip{
-  flex-shrink:0;width:30px;height:30px;border-radius:6px;
-  border:1.5px solid var(--mist);background:var(--white);
-  font-size:.7rem;font-weight:700;color:var(--mid);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:all .15s var(--ease);
-}
+.q-chip{flex-shrink:0;width:30px;height:30px;border-radius:5px;border:1.5px solid var(--mist);background:var(--white);font-size:.7rem;font-weight:700;color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .q-chip:hover{border-color:var(--kr-mid);color:var(--kr)}
-.q-chip.active{background:var(--kr);border-color:var(--kr-dark);color:#fff;transform:scale(1.1)}
-.q-chip.done{background:var(--faint);border-color:var(--mist);color:var(--mid)}
+.q-chip.active{background:var(--kr);border-color:var(--kr-dark);color:#fff}
+.q-chip.done{background:var(--faint);color:var(--mid)}
 
-/* main grid */
-.exam-main{
-  flex:1;display:grid;grid-template-columns:auto 1fr;
-  align-items:start;padding:1rem 4vw;gap:1rem;
-  overflow:hidden;min-height:0;
+/* ── MAIN ── */
+.exam-main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:1rem 3vw;gap:0;min-height:0;overflow:hidden}
+
+/* LEFT: avatar box + volume slider */
+.exam-wrap{display:flex;gap:1rem;align-items:flex-start}
+.left-col{display:flex;gap:.45rem;flex-shrink:0}
+
+.avatar-wrap{
+  width:min(33vw,220px);display:flex;flex-direction:column;
+  border:1.5px solid var(--mist);border-radius:var(--r);
+  overflow:hidden;background:var(--white);flex-shrink:0;
 }
+.avatar-img{width:100%;aspect-ratio:4/5;display:block;object-fit:cover;object-position:top center}
+.play-bar{
+  background:var(--kr);padding:.3rem .5rem;height:28px;
+  display:flex;align-items:center;gap:.4rem;cursor:pointer;
+  flex-shrink:0;transition:background .15s;
+}
+.play-bar:hover{background:var(--kr-dark)}
+.play-icon-btn{
+  width:22px;height:22px;border-radius:4px;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.8rem;flex-shrink:0;
+}
+.play-track{flex:1;height:3px;background:rgba(255,255,255,.3);border-radius:99px;overflow:hidden}
+.play-fill{height:100%;background:#fff;border-radius:99px;width:0%;transition:width .2s linear}
 
-/* LEFT */
-.left{display:flex;align-items:flex-start;gap:.5rem;flex-shrink:0}
-.avatar-col{display:flex;flex-direction:column;width:110px}
-.avatar-box{width:110px;border:1.5px solid var(--mist);border-radius:var(--r);overflow:hidden;background:var(--faint)}
-.avatar-img{width:110px;height:140px;display:block;object-fit:cover;object-position:center top}
-.replay-bar{background:var(--kr);padding:.28rem .5rem;display:flex;align-items:center;gap:.35rem;cursor:pointer;height:28px;transition:background .18s}
-.replay-bar:hover{background:var(--kr-dark)}
-.replay-icon{width:20px;height:20px;background:rgba(255,255,255,.18);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;flex-shrink:0}
-.replay-track{flex:1;height:3px;background:rgba(255,255,255,.3);border-radius:99px;overflow:hidden}
-.replay-fill{height:100%;background:#fff;border-radius:99px;transition:width .25s linear;width:0%}
-
-/* vertical volume */
-.vol-col{display:flex;flex-direction:column;align-items:center;gap:.3rem}
-.vol-track{width:4px;height:140px;background:var(--mist);border-radius:99px;position:relative;cursor:pointer;flex-shrink:0}
+/* vertical volume — same height as avatar-img (165px) */
+.vol-col{display:flex;flex-direction:column;align-items:center;gap:.3rem;flex-shrink:0}
+.vol-track{width:4px;height:10px;background:var(--mist);border-radius:99px;position:relative;cursor:pointer}
 .vol-fill{position:absolute;bottom:0;left:0;right:0;background:var(--kr);border-radius:99px}
-.vol-handle{position:absolute;left:50%;transform:translateX(-50%);width:12px;height:12px;background:var(--ink);border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:grab}
+.vol-handle{position:absolute;left:50%;transform:translateX(-50%);width:13px;height:13px;background:var(--ink);border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:grab}
 .vol-mic{font-size:.9rem;color:var(--mid)}
 
-/* RIGHT */
-.right{height:168px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;overflow:hidden}
-.right-inner{display:flex;flex-direction:column;gap:.7rem}
-.next-anchor{display:flex;justify-content:flex-end}
-
-/* Recording button */
-.btn-record{
-  width:100%;background:var(--kr);border:none;border-radius:var(--r);
-  color:#fff;font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;
-  padding:.7rem 1rem;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:.5rem;
-  transition:background .18s,transform .12s,box-shadow .18s;
-  box-shadow:0 3px 12px rgba(212,79,110,.28);flex-shrink:0;
+/* RIGHT: controls — hidden until audio plays */
+.right-col{
+  flex-shrink:0;
+  display:flex;flex-direction:column;
+  justify-content:space-between;
 }
-.btn-record:hover{background:var(--kr-dark);transform:scale(1.02)}
-.btn-record.recording{background:var(--kr);animation:recPulse 1.5s ease-in-out infinite}
-@keyframes recPulse{0%,100%{box-shadow:0 3px 12px rgba(212,79,110,.28)}50%{box-shadow:0 3px 22px rgba(212,79,110,.5)}}
+.right-top{display:flex;flex-direction:column;gap:.7rem}
+
+/* Recording button — blue like real OPIc */
+.btn-record{
+  width:100%;background:#3B82F6;border:none;border-radius:var(--r);
+  color:#fff;font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;
+  padding:.75rem 1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  transition:background .15s;
+  box-shadow:0 2px 10px rgba(59,130,246,.3);
+}
+.btn-record:hover{background:#2563EB}
+.btn-record.recording{background:#3B82F6;animation:recPulse 1.5s ease-in-out infinite}
+.btn-record:disabled{background:var(--mist);color:var(--mid);cursor:not-allowed;box-shadow:none;animation:none}
+@keyframes recPulse{0%,100%{box-shadow:0 2px 10px rgba(59,130,246,.3)}50%{box-shadow:0 2px 22px rgba(59,130,246,.55)}}
 .rec-wave{display:none;gap:2px;align-items:flex-end;height:14px}
 .btn-record.recording .rec-wave{display:flex}
 .btn-record.recording .rec-txt{display:none}
 .wbar{width:3px;border-radius:2px;background:rgba(255,255,255,.9);animation:wv .65s ease-in-out infinite alternate}
-.wbar:nth-child(2){animation-delay:.1s}.wbar:nth-child(3){animation-delay:.2s}
-.wbar:nth-child(4){animation-delay:.07s}.wbar:nth-child(5){animation-delay:.16s}
+.wbar:nth-child(2){animation-delay:.1s}.wbar:nth-child(3){animation-delay:.2s}.wbar:nth-child(4){animation-delay:.07s}.wbar:nth-child(5){animation-delay:.16s}
 @keyframes wv{from{height:3px}to{height:12px}}
 
 /* Response Time */
-.resp-section{display:flex;flex-direction:column;gap:.28rem;flex-shrink:0}
-.resp-label{font-size:.72rem;font-weight:700;color:var(--ink)}
-.resp-bar-outer{height:20px;border:1.5px solid var(--mist);border-radius:6px;background:var(--white);overflow:hidden}
-.resp-bar-inner{height:100%;background:var(--kr);border-radius:5px;transition:width .5s linear}
+.resp-section{display:flex;flex-direction:column;gap:.28rem}
+.resp-label{font-size:.72rem;font-weight:600;color:var(--ink)}
+.resp-bar-outer{height:20px;border:1.5px solid #333;border-radius:3px;background:var(--white);overflow:hidden}
+.resp-bar-inner{height:100%;background:#3B82F6;transition:width .5s linear}
 .resp-bar-inner.warn{background:var(--accent)}
 .resp-bar-inner.urgent{background:#ef4444}
 .resp-time-row{display:flex;justify-content:flex-end}
 .resp-time{font-size:.72rem;font-weight:700;color:var(--mid)}
 
-/* Next button */
-.btn-next{
-  background:var(--accent);border:none;border-radius:var(--r);
-  color:#fff;font-family:'Sora',sans-serif;font-size:.78rem;font-weight:700;
-  padding:.45rem 1.2rem;cursor:pointer;
-  display:flex;align-items:center;gap:.3rem;
-  transition:background .18s,transform .12s;
-  box-shadow:0 2px 8px rgba(242,169,59,.3);
-}
+/* Next */
+.next-anchor{display:flex;justify-content:flex-end}
+.btn-next{background:var(--accent);border:none;border-radius:var(--r);color:#fff;font-family:'Sora',sans-serif;font-size:.78rem;font-weight:700;padding:.45rem 1.3rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;box-shadow:0 2px 8px rgba(242,169,59,.3);transition:background .15s,transform .12s}
 .btn-next:hover{background:#d9922a;transform:translateY(-1px)}
 
 /* ══ RESULT ══ */
@@ -129,72 +131,49 @@ html,body{height:100%;font-family:'Sora',sans-serif;background:var(--paper);colo
 .r-item:hover{background:var(--kr-soft)}
 .r-num{width:22px;height:22px;background:var(--kr-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:var(--kr);flex-shrink:0;margin-top:.1rem}
 .r-text{font-family:'Noto Sans KR',sans-serif;font-size:.78rem;line-height:1.6;flex:1;color:var(--ink)}
-.r-play{background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--mid);flex-shrink:0;transition:color .15s,transform .12s}
-.r-play:hover{color:var(--kr);transform:scale(1.15)}
+.r-play{background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--mid);flex-shrink:0;transition:color .15s}
+.r-play:hover{color:var(--kr)}
 .r-btns{display:flex;gap:.6rem}
-.btn-retake{flex:1;background:var(--kr);border:none;border-radius:var(--r);color:#fff;font-family:'Sora',sans-serif;font-size:.8rem;font-weight:700;padding:.65rem 1rem;cursor:pointer;transition:background .18s,transform .12s;box-shadow:0 2px 10px rgba(212,79,110,.25)}
-.btn-retake:hover{background:var(--kr-dark);transform:translateY(-1px)}
-.btn-home{flex:1;background:var(--white);border:1.5px solid var(--mist);border-radius:var(--r);color:var(--ink);font-family:'Sora',sans-serif;font-size:.8rem;font-weight:700;padding:.65rem 1rem;cursor:pointer;transition:border-color .18s,transform .12s}
-.btn-home:hover{border-color:var(--kr);transform:translateY(-1px)}
+.btn-retake{flex:1;background:var(--kr);border:none;border-radius:var(--r);color:#fff;font-family:'Sora',sans-serif;font-size:.8rem;font-weight:700;padding:.65rem 1rem;cursor:pointer;transition:background .15s}
+.btn-retake:hover{background:var(--kr-dark)}
+.btn-home{flex:1;background:var(--white);border:1.5px solid var(--mist);border-radius:var(--r);color:var(--ink);font-family:'Sora',sans-serif;font-size:.8rem;font-weight:700;padding:.65rem 1rem;cursor:pointer;transition:border-color .15s}
+.btn-home:hover{border-color:var(--kr)}
 
-
-
-.btn-record:disabled{background:var(--mist);color:var(--mid);cursor:not-allowed;box-shadow:none;transform:none;animation:none}
-
-/* hero title row */
-.hero-line{display:flex;align-items:baseline;gap:.5rem}
-.hero-eye{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);white-space:nowrap}
-.hero-title{font-family:'DM Serif Display',serif;font-size:1.05rem;color:#fff;line-height:1;letter-spacing:-.01em;margin:0}
-.hero-title em{font-style:italic;color:rgba(255,255,255,.75)}
-
-/* refresh button */
-.btn-refresh{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:99px;color:rgba(255,255,255,.9);font-family:'Sora',sans-serif;font-size:.65rem;font-weight:700;padding:.26rem .75rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:background .18s,transform .15s;white-space:nowrap}
-.btn-refresh:hover{background:rgba(255,255,255,.25);transform:scale(1.05)}
-
-/* toast */
-.toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(44px);background:var(--ink);color:#fff;padding:.4rem 1rem;border-radius:99px;font-size:.7rem;font-weight:600;z-index:999;pointer-events:none;opacity:0;transition:transform .22s,opacity .22s;white-space:nowrap}
+/* TOAST */
+.toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(44px);background:var(--ink);color:#fff;padding:.42rem 1.1rem;border-radius:99px;font-size:.7rem;font-weight:600;z-index:999;pointer-events:none;opacity:0;transition:transform .22s,opacity .22s;white-space:nowrap}
 .toast.on{transform:translateX(-50%) translateY(0);opacity:1}
 </style>
-
 </head>
 <body>
 
-
-
 <!-- EXAM -->
 <div id="exam">
-  <!-- Topbar -->
   <div class="topbar">
     <div class="hero-line">
       <p class="hero-eye">Korean</p>
       <h1 class="hero-title">🇰🇷 <em>OPIc Test</em></h1>
     </div>
-    <button class="btn-refresh" onclick="loadRandom()" title="Chọn đề ngẫu nhiên">🔀 Refresh</button>
+    <button class="btn-refresh" onclick="loadRandom()">🔀 Refresh</button>
   </div>
 
-  <!-- Horizontal question strip -->
   <div class="q-strip-wrap">
     <div class="q-strip-label" id="qProgressLabel">Question 1 of 15</div>
     <div class="q-strip" id="qStrip"></div>
   </div>
 
-  <!-- Main -->
   <div class="exam-main">
-    <!-- LEFT -->
-    <div class="left">
-      <div class="avatar-col">
-        <div class="avatar-box">
-          <img class="avatar-img" id="avatarImg"
-               src="https://corsproxy.io/?url=https://luandai123.github.io/Korean_Opic/AvatarOPIC.png"
-               alt="OPIc Interviewer">
-          <div class="replay-bar" id="replayBar" onclick="handlePlay()">
-            <div class="replay-icon" id="playIcon">▶</div>
-            <div class="replay-track"><div class="replay-fill" id="replayFill"></div></div>
-          </div>
+    <div class="exam-wrap">
+    <!-- LEFT: avatar + vol -->
+    <div class="left-col">
+      <div class="avatar-wrap">
+        <img class="avatar-img"
+             src="https://luandai123.github.io/Korean_Opic/AvatarOPIC.png"
+             alt="OPIc Interviewer">
+        <div class="play-bar" onclick="handlePlay()">
+          <div class="play-icon-btn" id="playIcon">▶</div>
+          <div class="play-track"><div class="play-fill" id="replayFill"></div></div>
         </div>
       </div>
-
-      <!-- Vertical volume -->
       <div class="vol-col">
         <div class="vol-track" id="volTrack" onclick="volClick(event)">
           <div class="vol-fill" id="volFill" style="height:80%"></div>
@@ -204,13 +183,11 @@ html,body{height:100%;font-family:'Sora',sans-serif;background:var(--paper);colo
       </div>
     </div>
 
-    <!-- RIGHT -->
-    <div class="right">
-      <div class="right-inner">
-        <!-- Recording button -->
+    <!-- RIGHT: hidden until audio ends -->
+    <div class="right-col" id="rightCol" style="visibility:hidden">
+      <div class="right-top">
         <button class="btn-record" id="btnRec" onclick="toggleRec()" disabled>
-          <span style="font-size:1.15rem">🎤</span>
-          <span class="rec-txt" id="recTxt">Recording...</span>
+          <span class="rec-txt" id="recTxt">🎤 Recording...</span>
           <span class="rec-wave">
             <span class="wbar" style="height:4px"></span>
             <span class="wbar" style="height:9px"></span>
@@ -219,26 +196,20 @@ html,body{height:100%;font-family:'Sora',sans-serif;background:var(--paper);colo
             <span class="wbar" style="height:5px"></span>
           </span>
         </button>
-
-        <!-- Response Time -->
         <div class="resp-section" id="respSection" style="display:none">
           <div class="resp-label">Response Time:</div>
           <div class="resp-bar-outer">
             <div class="resp-bar-inner" id="respBar" style="width:100%"></div>
           </div>
-          <div class="resp-time-row">
-            <span class="resp-time" id="respTime">1:30</span>
-          </div>
+          <div class="resp-time-row"><span class="resp-time" id="respTime">1:30</span></div>
         </div>
       </div>
-
-      <!-- Next anchored to bottom-right -->
       <div class="next-anchor">
         <button class="btn-next" onclick="nextQ()">Next ›</button>
       </div>
     </div>
+    </div><!-- /exam-wrap -->
   </div>
-
 </div>
 
 <!-- RESULT -->
@@ -258,6 +229,7 @@ html,body{height:100%;font-family:'Sora',sans-serif;background:var(--paper);colo
 <div class="toast" id="toast"></div>
 
 <script>
+
 const ALL=[
 ["Test 1",1,"지금부터 인터뷰를 시작하겠습니다. 먼저 자기에 대해 말하십시오!","https://luandai123.github.io/Korean_Opic/Test 1.1.mp3"],
 ["Test 1",2,"학교 밖 생활에 어떻게 적응했습니까?","https://luandai123.github.io/Korean_Opic/Test 1.2.mp3"],
@@ -404,9 +376,11 @@ function renderQ(){
   const qs=getTest(curTest),q=qs[curIdx];
   syncStrip();
   document.getElementById('replayFill').style.width='0%';
-  // reset play icon to Play
   const pi=document.getElementById('playIcon');
   if(pi) pi.textContent='▶';
+  // hide right col until audio plays
+  const rc=document.getElementById('rightCol');
+  if(rc) rc.style.visibility='hidden';
   // reset record btn
   const rb=document.getElementById('btnRec');
   rb.classList.remove('recording');rb.disabled=true;isRec=false;
@@ -435,11 +409,10 @@ function playAudio(){
   a.onended=()=>{
     document.getElementById('replayFill').style.width='100%';
     audio=null;hasPlayed=true;
-    // switch replay bar icon to ↻
     const pi=document.getElementById('playIcon');
     if(pi) pi.textContent='↻';
-    // enable record
     document.getElementById('btnRec').disabled=false;
+    showRightCol();
     toast('✅ Nhấn Recording để trả lời');
   };
   a.onerror=()=>{toast('Lỗi audio');audio=null;};
@@ -540,6 +513,12 @@ function toast(msg){
 }
 
 loadRandom();
+
+
+/* show right col only after audio ends */
+function showRightCol(){
+  document.getElementById('rightCol').style.visibility='visible';
+}
 </script>
 </body>
 </html>
